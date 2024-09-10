@@ -1,11 +1,10 @@
 import { logger } from "$applications/logging";
 import { prisma } from "$applications/prisma";
 import { DonorDTO } from "$entities/Donor";
-import { ServiceResponse } from "$entities/Service";
 import { Donors } from "@prisma/client";
 import { ulid } from "ulid";
 
-export async function create(data: DonorDTO): Promise<ServiceResponse<Donors | {}>> {
+export async function create(data: DonorDTO): Promise<Donors> {
     try {
         const donor = await prisma.donors.create({
             data: {
@@ -14,31 +13,25 @@ export async function create(data: DonorDTO): Promise<ServiceResponse<Donors | {
             }
         });
 
-        return {
-            status: true,
-            data: donor
-        }
+        return donor;
     } catch (error) {
         logger.error('Error creating donor', { error });
         throw error;
     }
 }
 
-export async function getAll(): Promise<ServiceResponse<Donors | {}>> {
+export async function getAll(): Promise<Donors[]> {
     try {
         const donor = await prisma.donors.findMany();
 
-        return {
-            status: true,
-            data: donor
-        }
+        return donor;
     } catch (error) {
         logger.error('Error get all donor', { error });
         throw error;
     }
 }
 
-export async function update(id: string, data: DonorDTO): Promise<ServiceResponse<Donors | {}>> {
+export async function update(id: string, data: DonorDTO): Promise<Donors> {
     try {
         let donor = await prisma.donors.findUnique({
             where: {
@@ -47,14 +40,7 @@ export async function update(id: string, data: DonorDTO): Promise<ServiceRespons
         })
 
         if (!donor) {
-            return {
-                status: false,
-                data: {},
-                err: {
-                    message: "Donor not found",
-                    code: 404,
-                }
-            };
+            throw new Error("Donor not found");
         }
 
         donor = await prisma.donors.update({
@@ -66,17 +52,14 @@ export async function update(id: string, data: DonorDTO): Promise<ServiceRespons
             }
         })
 
-        return {
-            status: true,
-            data: donor
-        }
+        return donor;
     } catch (error) {
         logger.error('Error update donor', { error });
         throw error;
     }
 }
 
-export async function deleteById(id: string): Promise<ServiceResponse<Donors | {}>> {
+export async function deleteById(id: string): Promise<Donors> {
     try {
         let donor = await prisma.donors.findUnique({
             where: {
@@ -85,14 +68,7 @@ export async function deleteById(id: string): Promise<ServiceResponse<Donors | {
         })
 
         if (!donor) {
-            return {
-                status: false,
-                data: {},
-                err: {
-                    message: "Donor not found",
-                    code: 404,
-                }
-            };
+            throw new Error("Donor not found");
         }
 
         donor = await prisma.donors.delete({
@@ -101,10 +77,7 @@ export async function deleteById(id: string): Promise<ServiceResponse<Donors | {
             }
         })
 
-        return {
-            status: true,
-            data: donor
-        }
+        return donor;
     } catch (error) {
         logger.error('Error delete donor', { error });
         throw error;

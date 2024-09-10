@@ -1,4 +1,4 @@
-import { UserCreateDTO } from "$entities/User";
+import { exclude, UserCreateDTO } from "$entities/User";
 import * as UserService from "$services/UserService"
 import * as UserValidation from "$validations/UserValidation"
 import { logger } from "applications/logging";
@@ -16,7 +16,7 @@ export async function register(req: Request, res: Response): Promise<void> {
 
         const newUser = await UserService.create(userData);
 
-        res.status(201).json({ success: true, user: newUser });
+        res.status(201).json({ success: true, data: exclude(newUser, "password") });
     } catch (error) {
         const err = error as Error;
         logger.error('Error in register user', { error: err });

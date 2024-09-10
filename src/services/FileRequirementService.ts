@@ -1,11 +1,10 @@
 import { FileRequirementDTO } from './../entities/FileRequirements';
 import { logger } from "$applications/logging";
 import { prisma } from "$applications/prisma";
-import { ServiceResponse } from "$entities/Service";
 import { FileRequirements } from "@prisma/client";
 import { ulid } from "ulid";
 
-export async function create(data: FileRequirementDTO): Promise<ServiceResponse<FileRequirements | {}>> {
+export async function create(data: FileRequirementDTO): Promise<FileRequirements> {
     try {
         const fileRequirement = await prisma.fileRequirements.create({
             data: {
@@ -14,31 +13,25 @@ export async function create(data: FileRequirementDTO): Promise<ServiceResponse<
             }
         });
 
-        return {
-            status: true,
-            data: fileRequirement
-        }
+        return fileRequirement;
     } catch (error) {
         logger.error('Error creating file requirement', { error });
         throw error;
     }
 }
 
-export async function getAll(): Promise<ServiceResponse<FileRequirements | {}>> {
+export async function getAll(): Promise<FileRequirements[]> {
     try {
         const fileRequirement = await prisma.fileRequirements.findMany();
 
-        return {
-            status: true,
-            data: fileRequirement
-        }
+        return fileRequirement;
     } catch (error) {
         logger.error('Error get all file requirement', { error });
         throw error;
     }
 }
 
-export async function update(id: string, data: FileRequirementDTO): Promise<ServiceResponse<FileRequirements | {}>> {
+export async function update(id: string, data: FileRequirementDTO): Promise<FileRequirements> {
     try {
         let fileRequirement = await prisma.fileRequirements.findUnique({
             where: {
@@ -47,14 +40,7 @@ export async function update(id: string, data: FileRequirementDTO): Promise<Serv
         })
 
         if (!fileRequirement) {
-            return {
-                status: false,
-                data: {},
-                err: {
-                    message: "file requirement not found",
-                    code: 404,
-                }
-            };
+            throw new Error("file requirement not found");
         }
 
         fileRequirement = await prisma.fileRequirements.update({
@@ -66,17 +52,14 @@ export async function update(id: string, data: FileRequirementDTO): Promise<Serv
             }
         })
 
-        return {
-            status: true,
-            data: fileRequirement
-        }
+        return fileRequirement;
     } catch (error) {
         logger.error('Error update file requirement', { error });
         throw error;
     }
 }
 
-export async function deleteById(id: string): Promise<ServiceResponse<FileRequirements | {}>> {
+export async function deleteById(id: string): Promise<FileRequirements> {
     try {
         let fileRequirement = await prisma.fileRequirements.findUnique({
             where: {
@@ -85,14 +68,7 @@ export async function deleteById(id: string): Promise<ServiceResponse<FileRequir
         })
 
         if (!fileRequirement) {
-            return {
-                status: false,
-                data: {},
-                err: {
-                    message: "file requirement not found",
-                    code: 404,
-                }
-            };
+            throw new Error("file requirement not found");
         }
 
         fileRequirement = await prisma.fileRequirements.delete({
@@ -101,10 +77,7 @@ export async function deleteById(id: string): Promise<ServiceResponse<FileRequir
             }
         })
 
-        return {
-            status: true,
-            data: fileRequirement
-        }
+        return fileRequirement;
     } catch (error) {
         logger.error('Error delete file requirement', { error });
         throw error;

@@ -14,9 +14,9 @@ export async function create(req: Request, res: Response): Promise<void> {
             return;
         }
 
-        const newDonor = await FileRequirementService.create(fileRequirement);
+        const newFileRequirement = await FileRequirementService.create(fileRequirement);
 
-        res.status(201).json({ success: true, data: newDonor, message: 'Succesfully created fileRequirement!' });
+        res.status(201).json({ success: true, data: newFileRequirement, message: 'Succesfully created fileRequirement!' });
     } catch (error) {
         const err = error as Error;
         logger.error('Error in creating fileRequirement', { error: err });
@@ -49,9 +49,9 @@ export async function update(req: Request, res: Response): Promise<void> {
             return;
         }
 
-        const updateDonor = await FileRequirementService.update(id, fileRequirement);
+        const updateFileRequirement = await FileRequirementService.update(id, fileRequirement);
 
-        res.status(201).json({ success: true, data: updateDonor, message: 'Succesfully updated fileRequirement!' });
+        res.status(201).json({ success: true, data: updateFileRequirement, message: 'Succesfully updated fileRequirement!' });
     } catch (error) {
         const err = error as Error;
         logger.error('Error in updating fileRequirement', { error: err });

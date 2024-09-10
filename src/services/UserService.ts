@@ -1,13 +1,12 @@
-import { exclude, UserCreateDTO } from "$entities/User";
+import { UserCreateDTO } from "$entities/User";
 import { prisma } from "applications/prisma";
 import { Status, User } from "@prisma/client";
 import { ulid } from "ulid";
 import bcrypt from "bcrypt"
 import { logger } from "applications/logging";
 import { DateTime } from "luxon";
-import { ServiceResponse } from "$entities/Service";
 
-export async function create(data: UserCreateDTO): Promise<ServiceResponse<User | {}>> {
+export async function create(data: UserCreateDTO): Promise<User> {
     try {
         const hashedPassword = await bcrypt.hash(data.password, 12)
         const formattedBirthdate = DateTime.fromISO(data.birthdate).toISODate();
@@ -28,10 +27,7 @@ export async function create(data: UserCreateDTO): Promise<ServiceResponse<User 
             }
         })
 
-        return {
-            status: true,
-            data: exclude(newUser, "password")
-        }
+        return newUser;
     } catch (error) {
         logger.error('Error creating user', { error });
         throw error;
