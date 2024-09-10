@@ -76,7 +76,7 @@ export async function update(id: string, data: DonorDTO): Promise<ServiceRespons
     }
 }
 
-export async function deleteDonor(id: string): Promise<ServiceResponse<Donors | {}>> {
+export async function deleteById(id: string): Promise<ServiceResponse<Donors | {}>> {
     try {
         let donor = await prisma.donors.findUnique({
             where: {

@@ -60,11 +60,11 @@ export async function update(req: Request, res: Response): Promise<void> {
     }
 }
 
-export async function deleteDonor(req: Request, res: Response): Promise<void> {
+export async function deleteById(req: Request, res: Response): Promise<void> {
     try {
         const id = req.params.id;
 
-        const donor = await DonorService.deleteDonor(id);
+        const donor = await DonorService.deleteById(id);
 
         res.status(201).json({ success: true, data: donor, message: 'Succesfully deleted donor!' });
     } catch (error) {

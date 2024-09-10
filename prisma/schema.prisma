@@ -51,15 +51,15 @@ model Donors {
   // scholarships Scholarships[]
 }
 
-// model FileRequirements {
-//   id        String   @id @unique
-//   name      String
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
+model FileRequirements {
+  id        String   @id @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-//   ScholarshipsOnFileRequirements ScholarshipsOnFileRequirements[]
-//   UserUploadedFiles              UserUploadedFiles[]
-// }
+  // ScholarshipsOnFileRequirements ScholarshipsOnFileRequirements[]
+  // UserUploadedFiles              UserUploadedFiles[]
+}
 
 // model Scholarships {
 //   id                String   @id @unique
