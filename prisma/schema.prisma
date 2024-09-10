@@ -38,4 +38,82 @@ model User {
   role         Roles
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  // UserScholarships UserScholarships[]
 }
+
+model Donors {
+  id        String   @id @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // scholarships Scholarships[]
+}
+
+// model FileRequirements {
+//   id        String   @id @unique
+//   name      String
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   ScholarshipsOnFileRequirements ScholarshipsOnFileRequirements[]
+//   UserUploadedFiles              UserUploadedFiles[]
+// }
+
+// model Scholarships {
+//   id                String   @id @unique
+//   name              String
+//   donorId           String
+//   donor             Donors   @relation(fields: [donorId], references: [id])
+//   year              String
+//   amount            String
+//   amountPeriod      String
+//   duration          String
+//   startRegistration DateTime
+//   endRegistration   DateTime
+//   quota             String
+//   startScholarship  DateTime
+//   endScholarship    DateTime
+//   createdAt         DateTime @default(now())
+//   updatedAt         DateTime @updatedAt
+
+//   ScholarshipsOnFileRequirements ScholarshipsOnFileRequirements[]
+//   UserScholarships               UserScholarships[]
+// }
+
+// model ScholarshipsOnFileRequirements {
+//   scholarshipId     String
+//   scholarship       Scholarships     @relation(fields: [scholarshipId], references: [id])
+//   fileRequirementId String
+//   fileRequirement   FileRequirements @relation(fields: [fileRequirementId], references: [id])
+//   createdAt         DateTime         @default(now())
+//   updatedAt         DateTime         @updatedAt
+
+//   @@id([scholarshipId, fileRequirementId])
+// }
+
+// model UserScholarships {
+//   id                String       @id @unique
+//   userId            String
+//   user              User         @relation(fields: [userId], references: [id])
+//   scholarshipId     String
+//   scholarship       Scholarships @relation(fields: [scholarshipId], references: [id])
+//   fileStatus        String
+//   scholarshipStatus String
+//   createdAt         DateTime     @default(now())
+//   updatedAt         DateTime     @updatedAt
+
+//   UserUploadedFiles UserUploadedFiles[]
+// }
+
+// model UserUploadedFiles {
+//   id                String           @id @unique @default(uuid())
+//   userScholarshipId String
+//   userScholarship   UserScholarships @relation(fields: [userScholarshipId], references: [id])
+//   fileRequirementId String
+//   fileRequirement   FileRequirements @relation(fields: [fileRequirementId], references: [id])
+//   fileUrl           String
+//   createdAt         DateTime         @default(now())
+//   updatedAt         DateTime         @updatedAt
+// }

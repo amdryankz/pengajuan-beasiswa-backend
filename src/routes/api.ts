@@ -1,8 +1,11 @@
-import * as UserController from "$controllers/UserController";
-import * as AuthController from "$controllers/AuthController";
-import express from "express";
+import express from 'express';
+import * as DonorController from "$controllers/DonorController"
+import { authenticateJWT } from 'middlewares/AuthMiddleware';
 
-export const publicRouter = express.Router();
+export const apiRouter = express.Router();
+apiRouter.use(authenticateJWT);
 
-publicRouter.post('/register', UserController.register);
-publicRouter.post('/login', AuthController.login);
+apiRouter.get('/admin/donors', DonorController.getAll);
+apiRouter.post('/admin/donors', DonorController.create);
+apiRouter.put('/admin/donors/:id', DonorController.update);
+apiRouter.delete('/admin/donors/:id', DonorController.deleteDonor);

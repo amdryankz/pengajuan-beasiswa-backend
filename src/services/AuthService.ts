@@ -70,24 +70,3 @@ export async function login(data: UserLoginDTO): Promise<ServiceResponse<any>> {
         throw new Error('Login failed');
     }
 }
-
-export function verifyToken(token: string): ServiceResponse<any> {
-    try {
-        const JWT_SECRET = process.env.JWT_SECRET || "";
-        jwt.verify(token, JWT_SECRET);
-        return {
-            status: true,
-            data: {}
-        };
-    } catch (err) {
-        logger.error(`Error verifying token: ${err}`);
-        return {
-            status: false,
-            data: {},
-            err: {
-                code: 403,
-                message: "Invalid Token",
-            }
-        };
-    }
-}
