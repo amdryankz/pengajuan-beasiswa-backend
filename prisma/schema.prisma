@@ -48,7 +48,7 @@ model Donors {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // scholarships Scholarships[]
+  scholarships Scholarships[]
 }
 
 model FileRequirements {
@@ -57,41 +57,46 @@ model FileRequirements {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // ScholarshipsOnFileRequirements ScholarshipsOnFileRequirements[]
+  ScholarshipsOnFileRequirements ScholarshipsOnFileRequirements[]
   // UserUploadedFiles              UserUploadedFiles[]
 }
 
-// model Scholarships {
-//   id                String   @id @unique
-//   name              String
-//   donorId           String
-//   donor             Donors   @relation(fields: [donorId], references: [id])
-//   year              String
-//   amount            String
-//   amountPeriod      String
-//   duration          String
-//   startRegistration DateTime
-//   endRegistration   DateTime
-//   quota             String
-//   startScholarship  DateTime
-//   endScholarship    DateTime
-//   createdAt         DateTime @default(now())
-//   updatedAt         DateTime @updatedAt
+enum AmountPeriod {
+  YEAR
+  MONTH
+}
 
-//   ScholarshipsOnFileRequirements ScholarshipsOnFileRequirements[]
-//   UserScholarships               UserScholarships[]
-// }
+model Scholarships {
+  id                String       @id @unique
+  name              String
+  donorId           String
+  donor             Donors       @relation(fields: [donorId], references: [id])
+  year              String
+  amount            String
+  amountPeriod      AmountPeriod
+  duration          String
+  startRegistration DateTime
+  endRegistration   DateTime
+  quota             String
+  startScholarship  DateTime
+  endScholarship    DateTime
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
 
-// model ScholarshipsOnFileRequirements {
-//   scholarshipId     String
-//   scholarship       Scholarships     @relation(fields: [scholarshipId], references: [id])
-//   fileRequirementId String
-//   fileRequirement   FileRequirements @relation(fields: [fileRequirementId], references: [id])
-//   createdAt         DateTime         @default(now())
-//   updatedAt         DateTime         @updatedAt
+  ScholarshipsOnFileRequirements ScholarshipsOnFileRequirements[]
+  // UserScholarships               UserScholarships[]
+}
 
-//   @@id([scholarshipId, fileRequirementId])
-// }
+model ScholarshipsOnFileRequirements {
+  scholarshipId     String
+  scholarship       Scholarships     @relation(fields: [scholarshipId], references: [id])
+  fileRequirementId String
+  fileRequirement   FileRequirements @relation(fields: [fileRequirementId], references: [id])
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@id([scholarshipId, fileRequirementId])
+}
 
 // model UserScholarships {
 //   id                String       @id @unique

@@ -14,9 +14,9 @@ export async function login(req: Request, res: Response): Promise<void> {
             return;
         }
 
-        const newUser = await AuthService.login(user);
+        const loginUser = await AuthService.login(user);
 
-        res.status(201).json({ success: true, user: newUser });
+        res.status(201).json({ success: true, data: loginUser });
     } catch (error) {
         const err = error as Error;
         logger.error('Error in login user', { error: err });
