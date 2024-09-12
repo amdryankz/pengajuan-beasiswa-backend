@@ -48,8 +48,14 @@ export async function getAll(): Promise<Scholarships[]> {
         const scholarship = await prisma.scholarships.findMany({
             include: {
                 ScholarshipsOnFileRequirements: {
-                    include: {
-                        fileRequirement: true
+                    select: {
+                        fileRequirementId: true,
+                        fileRequirement: {
+                            select: {
+                                id: true,
+                                name: true
+                            }
+                        }
                     }
                 }
             }
@@ -58,6 +64,38 @@ export async function getAll(): Promise<Scholarships[]> {
         return scholarship;
     } catch (error) {
         logger.error('Error get all scholarships', { error });
+        throw error;
+    }
+}
+
+export async function getById(id: string): Promise<Scholarships> {
+    try {
+        const scholarship = await prisma.scholarships.findUnique({
+            where: {
+                id
+            },
+            include: {
+                ScholarshipsOnFileRequirements: {
+                    select: {
+                        fileRequirementId: true,
+                        fileRequirement: {
+                            select: {
+                                id: true,
+                                name: true
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        if (!scholarship) {
+            throw new Error("scholarship not found");
+        }
+
+        return scholarship;
+    } catch (error) {
+        logger.error('Error get scholarship by id', { error });
         throw error;
     }
 }
@@ -71,7 +109,7 @@ export async function update(id: string, data: ScholarshipDTO, fileRequirementId
         })
 
         if (!scholarship) {
-            throw new Error("file requirement not found");
+            throw new Error("scholarship not found");
         }
 
         scholarship = await prisma.$transaction(async (prisma) => {
@@ -128,7 +166,7 @@ export async function deleteById(id: string): Promise<Scholarships> {
         })
 
         if (!scholarship) {
-            throw new Error("file requirement not found");
+            throw new Error("scholarship not found");
         }
 
         scholarship = await prisma.$transaction(async (prisma) => {

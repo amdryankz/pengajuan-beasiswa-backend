@@ -75,11 +75,11 @@ model Scholarships {
   amount            String
   amountPeriod      AmountPeriod
   duration          String
-  startRegistration DateTime
-  endRegistration   DateTime
+  startRegistration String
+  endRegistration   String
   quota             String
-  startScholarship  DateTime
-  endScholarship    DateTime
+  startScholarship  String
+  endScholarship    String
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
 
