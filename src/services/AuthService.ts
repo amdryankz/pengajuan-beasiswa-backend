@@ -4,12 +4,22 @@ import { prisma } from "$applications/prisma";
 import { exclude, UserJWTDAO, UserLoginDTO } from "$entities/User";
 import { User } from "@prisma/client";
 import jwt from "jsonwebtoken";
-import { ServiceResponse } from '$entities/Service';
 
 function createToken(user: User) {
     const jwtPayload = exclude(user, "password") as UserJWTDAO;
     const token = jwt.sign(jwtPayload, process.env.JWT_SECRET ?? "", { expiresIn: 7200 });
     return token;
+}
+
+interface ServiceResponse<T> {
+    data?: T
+    err?: ServiceError
+    status: boolean
+}
+
+interface ServiceError {
+    message: string
+    code: number
 }
 
 export async function login(data: UserLoginDTO): Promise<ServiceResponse<any>> {

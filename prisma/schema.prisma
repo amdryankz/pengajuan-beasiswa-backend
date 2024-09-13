@@ -39,7 +39,7 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  // UserScholarships UserScholarships[]
+  UserScholarships UserScholarships[]
 }
 
 model Donors {
@@ -58,7 +58,7 @@ model FileRequirements {
   updatedAt DateTime @updatedAt
 
   ScholarshipsOnFileRequirements ScholarshipsOnFileRequirements[]
-  // UserUploadedFiles              UserUploadedFiles[]
+  UserUploadedFiles              UserUploadedFiles[]
 }
 
 enum AmountPeriod {
@@ -84,7 +84,7 @@ model Scholarships {
   updatedAt         DateTime     @updatedAt
 
   ScholarshipsOnFileRequirements ScholarshipsOnFileRequirements[]
-  // UserScholarships               UserScholarships[]
+  UserScholarships               UserScholarships[]
 }
 
 model ScholarshipsOnFileRequirements {
@@ -98,27 +98,32 @@ model ScholarshipsOnFileRequirements {
   @@id([scholarshipId, fileRequirementId])
 }
 
-// model UserScholarships {
-//   id                String       @id @unique
-//   userId            String
-//   user              User         @relation(fields: [userId], references: [id])
-//   scholarshipId     String
-//   scholarship       Scholarships @relation(fields: [scholarshipId], references: [id])
-//   fileStatus        String
-//   scholarshipStatus String
-//   createdAt         DateTime     @default(now())
-//   updatedAt         DateTime     @updatedAt
+enum passStatus {
+  PASSED
+  NOT_PASS
+}
 
-//   UserUploadedFiles UserUploadedFiles[]
-// }
+model UserScholarships {
+  id                String       @id @unique
+  userId            String
+  user              User         @relation(fields: [userId], references: [id])
+  scholarshipId     String
+  scholarship       Scholarships @relation(fields: [scholarshipId], references: [id])
+  fileStatus        passStatus?
+  scholarshipStatus passStatus?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
 
-// model UserUploadedFiles {
-//   id                String           @id @unique @default(uuid())
-//   userScholarshipId String
-//   userScholarship   UserScholarships @relation(fields: [userScholarshipId], references: [id])
-//   fileRequirementId String
-//   fileRequirement   FileRequirements @relation(fields: [fileRequirementId], references: [id])
-//   fileUrl           String
-//   createdAt         DateTime         @default(now())
-//   updatedAt         DateTime         @updatedAt
-// }
+  UserUploadedFiles UserUploadedFiles[]
+}
+
+model UserUploadedFiles {
+  id                String           @id @unique @default(uuid())
+  userScholarshipId String
+  userScholarship   UserScholarships @relation(fields: [userScholarshipId], references: [id])
+  fileRequirementId String
+  fileRequirement   FileRequirements @relation(fields: [fileRequirementId], references: [id])
+  fileUrl           String
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+}

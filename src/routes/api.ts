@@ -2,6 +2,7 @@ import express from 'express';
 import * as DonorController from "$controllers/DonorController"
 import * as FileRequirementController from "$controllers/FileRequirementController"
 import * as ScholarshipController from "$controllers/ScholarshipController"
+import * as UserScholarshipController from "$controllers/UserScholarshipController"
 import { authenticateJWT } from 'middlewares/AuthMiddleware';
 
 export const apiRouter = express.Router();
@@ -22,3 +23,6 @@ apiRouter.post('/admin/scholarship', ScholarshipController.create);
 apiRouter.get('/admin/scholarship/:id', ScholarshipController.getById);
 apiRouter.put('/admin/scholarship/:id', ScholarshipController.update);
 apiRouter.delete('/admin/scholarship/:id', ScholarshipController.deleteById);
+
+apiRouter.get('/admin/user-scholarship', UserScholarshipController.getAll);
+apiRouter.get('/admin/user-scholarship/:id', UserScholarshipController.getById);
